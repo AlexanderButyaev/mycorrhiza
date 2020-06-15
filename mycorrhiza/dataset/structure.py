@@ -26,24 +26,25 @@ class Structure(Dataset):
 		self._alpha = {}
 
 	def _iterator(self):
-		with open(self._file_path) as fin:
-			for line in fin:
+		for _file_path in [self._file_path] + _extra_file_path:
+			with open(_file_path) as fin:
+				for line in fin:
 
-				line_a = line.strip().split()
+					line_a = line.strip().split()
 
-				if self._diploid:
-					line_b = fin.readline().strip().split()
-					if len(line_a) != len(line_b):
-						raise LoadingError('Diploid loci count mismatch for sample {0}.'.format(line_a[0]))
+					if self._diploid:
+						line_b = fin.readline().strip().split()
+						if len(line_a) != len(line_b):
+							raise LoadingError('Diploid loci count mismatch for sample {0}.'.format(line_a[0]))
 
-				geno_a = line_a[3+self._n_optional_cols:]
-				geno_b = line_b[3+self._n_optional_cols:] if self._diploid else []
+					geno_a = line_a[3+self._n_optional_cols:]
+					geno_b = line_b[3+self._n_optional_cols:] if self._diploid else []
 
-				if not self.is_str:
-					geno_a = self._replace_missing(geno_a)
-					geno_b = self._replace_missing(geno_b)
+					if not self.is_str:
+						geno_a = self._replace_missing(geno_a)
+						geno_b = self._replace_missing(geno_b)
 
-				yield Sample(line_a[0], len(geno_a), population=line_a[1], known=True if line_a[2] == "1" else False), geno_a + geno_b
+					yield Sample(line_a[0], len(geno_a), population=line_a[1], known=True if line_a[2] == "1" else False), geno_a + geno_b
 
 	def _replace_missing(self, l, f='N', t='-9'):
 		return [f if x == t else ['A', 'T', 'G', 'C'][int(x)] for x in l]

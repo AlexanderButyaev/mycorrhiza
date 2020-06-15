@@ -35,6 +35,7 @@ class Dataset:
 		self._is_str = is_str
 		self._samples = []
 		self._num_loci = None
+		self._extra_file_path = []
 
 	def _iterator(self):
 		return []
@@ -110,3 +111,20 @@ class Dataset:
 				distances[i, j] = sum(vals)/len(vals) if len(vals) != 0 else 0
 
 		return distances
+
+	def concatenate(self, *others):
+		# check compatibility before loading
+		for _dataset in others:
+			if not (self._diploid == _dataset.diploid and
+					self._is_str == _dataset._is_str and
+					self._num_loci == _dataset._num_loci):
+				raise ValueError(
+					"Original dataset and appendix must have the same properties." +
+					" (Source: %s)" % _dataset._file_path
+				)
+		for _dataset in others:		
+			for _sample in _dataset._samples:
+				self._samples.append(_sample)
+			self._extra_file_path.append(_dataset._file_path)
+
+		self.statistics()
