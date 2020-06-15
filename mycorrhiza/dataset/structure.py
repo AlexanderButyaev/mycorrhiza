@@ -26,7 +26,7 @@ class Structure(Dataset):
 		self._alpha = {}
 
 	def _iterator(self):
-		for _file_path in [self._file_path] + _extra_file_path:
+		for _file_path in [self._file_path] + self._extra_file_path:
 			with open(_file_path) as fin:
 				for line in fin:
 
