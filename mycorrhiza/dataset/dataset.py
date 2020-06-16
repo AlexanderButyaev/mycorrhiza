@@ -105,18 +105,13 @@ class Dataset:
 	def _microsatellite_distances(self):
 		matrix = np.array([x[1] for x in self._iterator()])
 		distances = np.zeros([matrix.shape[0]]*2)
-
 		for i in range(matrix.shape[0]):
-			print(i)
 			for j in range(matrix.shape[0]):
 				mtx = matrix[[i,j],:]
 				mtx = mtx[~np.isin(mtx[:,0],['-9','000']) & ~np.isin(mtx[:,1],['-9','000'])]
 				sum_vals = (mtx[:,0] != mtx[:,1]).sum()
 				len_vals = mtx.shape[0]
 				distances[i, j] = sum_vals/len_vals if len_vals != 0 else 0
-				# vals = [1 if a != b else 0 for a, b in zip(matrix[i], matrix[j])
-				# 		if a != '-9' and b != '-9' and a != '000' and b != '000']
-				# distances[i, j] = sum(vals)/len(vals) if len(vals) != 0 else 0
 
 		return distances
 
