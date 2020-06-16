@@ -36,6 +36,7 @@ class Dataset:
 		self._samples = []
 		self._num_loci = None
 		self._extra_file_path = []
+		self._mix_indices = []
 
 	def _iterator(self):
 		return []
@@ -59,6 +60,7 @@ class Dataset:
 		for sample, genotype in self._iterator():
 			self._add_sample(sample)
 
+		self._mix_indices.append( len(self._samples) )
 		self.statistics()
 
 	def statistics(self):
@@ -128,14 +130,22 @@ class Dataset:
 		for _dataset in others:
 			indices = []
 			identifiers = self.identifiers
-			for _sample in _dataset._samples:
+			are_distinct = True
+			sub_mix_indices = []
+			for _i, _sample in enumerate(_dataset._samples):
 				try:
 					indx = identifiers.index(_sample.identifier)
 				except ValueError:
 					indx = int(sample_no)
 					self._samples.append(_sample)
+					sub_mix_indices.append(_i)
 					sample_no += 1
+
 				indices.append(indx)
+			if are_distinct:
+				self._mix_indices.append(_dataset.num_samples)
+			else:
+				self._mix_indices.append(sub_mix_indices)
 			self._extra_file_path.append(_dataset._file_path)
 			other_indices.append(indices)
 		self.statistics()

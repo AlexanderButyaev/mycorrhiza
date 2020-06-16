@@ -26,8 +26,14 @@ class Structure(Dataset):
 		self._alpha = {}
 
 	def _iterator(self):
-		for _file_path in [self._file_path] + self._extra_file_path:
-			with open(_file_path) as fin:
+		for _mix_index, _file_path in zip([self._file_path] + self._extra_file_path, self._mix_indices):
+			if isinstance(_mix_index, int):
+				valid_func = lambda x : True
+			else:
+				_mix_index_set = set(_mix_index)
+				valid_func = lambda x : x in _mix_index_set
+			with open(self._file_path) as fin:
+				counter = 0
 				for line in fin:
 
 					line_a = line.strip().split()
@@ -44,7 +50,9 @@ class Structure(Dataset):
 						geno_a = self._replace_missing(geno_a)
 						geno_b = self._replace_missing(geno_b)
 
-					yield Sample(line_a[0], len(geno_a), population=line_a[1], known=True if line_a[2] == "1" else False), geno_a + geno_b
+					if valid_func(counter):
+						yield Sample(line_a[0], len(geno_a), population=line_a[1], known=True if line_a[2] == "1" else False), geno_a + geno_b
+					counter+=1
 
 	def _replace_missing(self, l, f='N', t='-9'):
 		return [f if x == t else ['A', 'T', 'G', 'C'][int(x)] for x in l]
