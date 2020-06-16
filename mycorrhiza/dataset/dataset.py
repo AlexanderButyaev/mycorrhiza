@@ -135,6 +135,7 @@ class Dataset:
 			for _i, _sample in enumerate(_dataset._samples):
 				try:
 					indx = identifiers.index(_sample.identifier)
+					are_distinct = False
 				except ValueError:
 					indx = int(sample_no)
 					self._samples.append(_sample)
