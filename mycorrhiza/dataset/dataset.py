@@ -122,9 +122,21 @@ class Dataset:
 					"Original dataset and appendix must have the same properties." +
 					" (Source: %s)" % _dataset._file_path
 				)
-		for _dataset in others:		
+		# mix with already existing identifiers
+		other_indices = []
+		sample_no = original_sample_size = self.num_samples
+		for _dataset in others:
+			indices = []
+			identifiers = self.identifiers
 			for _sample in _dataset._samples:
-				self._samples.append(_sample)
+				try:
+					indx = identifiers.index(_sample):
+				except ValueError:
+					indx = int(sample_no)
+					self._samples.append(_sample)
+					sample_no += 1
+				indices.append(indx)
 			self._extra_file_path.append(_dataset._file_path)
-
+			other_indices.append(indices)
 		self.statistics()
+		return original_sample_size, other_indices
