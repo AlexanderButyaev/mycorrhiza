@@ -30,7 +30,9 @@ class Structure(Dataset):
 			valid_func = lambda x : True
 			if self._mix_indices:
 				_mix_index = self._mix_indices[_i]
-				if not isinstance(_mix_index, int):
+				if not _mix_index:
+					continue
+				elif not isinstance(_mix_index, int):
 					_mix_index_set = set(_mix_index)
 					valid_func = lambda x : x in _mix_index_set
 			with open(self._file_path) as fin:
