@@ -130,7 +130,7 @@ class Dataset:
 			identifiers = self.identifiers
 			for _sample in _dataset._samples:
 				try:
-					indx = identifiers.index(_sample)
+					indx = identifiers.index(_sample.identifier)
 				except ValueError:
 					indx = int(sample_no)
 					self._samples.append(_sample)
