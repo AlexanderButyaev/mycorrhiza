@@ -26,12 +26,13 @@ class Structure(Dataset):
 		self._alpha = {}
 
 	def _iterator(self):
-		for _mix_index, _file_path in zip([self._file_path] + self._extra_file_path, self._mix_indices):
-			if isinstance(_mix_index, int):
-				valid_func = lambda x : True
-			else:
-				_mix_index_set = set(_mix_index)
-				valid_func = lambda x : x in _mix_index_set
+		for _i, _file_path in enumerate([self._file_path] + self._extra_file_path):
+			valid_func = lambda x : True
+			if self._mix_indices:
+				_mix_index = self._mix_indices[_i]
+				if not isinstance(_mix_index, int):
+					_mix_index_set = set(_mix_index)
+					valid_func = lambda x : x in _mix_index_set
 			with open(self._file_path) as fin:
 				counter = 0
 				for line in fin:
