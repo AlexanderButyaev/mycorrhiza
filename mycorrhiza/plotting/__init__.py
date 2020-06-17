@@ -1,1 +1,1 @@
-from .plotting import mixture_plot
+from .plotting import mixture_plot, mixture_plot_proba

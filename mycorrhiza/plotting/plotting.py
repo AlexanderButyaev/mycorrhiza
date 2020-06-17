@@ -63,3 +63,37 @@ def mixture_plot(result: Result, predictionOnly=False) -> None:
 
 
 	plt.savefig(result._out_path+'/mixt.png', bbox_inches='tight')
+
+
+def mixture_plot_proba(identifiers, classes, probabilities, filepath):
+	q_matrix = np.array(probabilities)
+	
+	colors = plt.cm.jet(np.linspace(0, 1.0, num=len(classes)))
+
+	ind = np.arange(q_matrix.shape[0])  # the x locations for the groups
+	width = 1
+
+	btm = np.zeros(q_matrix.shape[0])
+
+	fig = plt.figure(figsize=((0.1*q_matrix.shape[0])+5, 5))
+
+	ax = fig.add_axes([0.05, 0.1, 0.9, 0.7])
+
+	for j, row in enumerate(q_matrix.T):
+		ax.bar(ind, row, width, bottom=btm, color=colors[j], label=classes[j])
+		btm += row
+
+	ax.set_xlim(-0.5, q_matrix.shape[0] - 0.5)
+	ax.set_ylim(0, 1)
+
+	ax.set_xticks(ind)
+	ax.set_xticklabels(identifiers, rotation=90, fontsize=7)
+
+
+	plt.legend(ncol=5,bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+			   mode="expand")
+
+	ax.tick_params(axis='y', which='both', length=0)
+	plt.setp(ax.get_yticklabels(), visible=False)
+
+	plt.savefig(filepath, bbox_inches='tight')

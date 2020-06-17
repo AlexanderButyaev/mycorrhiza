@@ -117,6 +117,7 @@ class Dataset:
 
 	def concatenate(self, *others):
 		# check compatibility before loading
+		# @TODO: self._num_loci - align with original file...
 		for _dataset in others:
 			if not (self._diploid == _dataset.diploid and
 					self._is_str == _dataset._is_str and
