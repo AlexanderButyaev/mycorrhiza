@@ -108,9 +108,9 @@ class Dataset:
 		for i in range(matrix.shape[0]):
 			for j in range(matrix.shape[0]):
 				mtx = matrix[[i,j],:]
-				mtx = mtx[~np.isin(mtx[:,0],['-9','000']) & ~np.isin(mtx[:,1],['-9','000'])]
-				sum_vals = (mtx[:,0] != mtx[:,1]).sum()
-				len_vals = mtx.shape[0]
+				mtx = mtx[:, ~np.isin(mtx[0,:],['-9','000']) & ~np.isin(mtx[1,:],['-9','000'])]
+				sum_vals = (mtx[0,:] != mtx[1,:]).sum()
+				len_vals = mtx.shape[1]
 				distances[i, j] = sum_vals/len_vals if len_vals != 0 else 0
 
 		return distances

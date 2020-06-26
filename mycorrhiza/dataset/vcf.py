@@ -19,6 +19,7 @@ def _count_loci(path_in):
 		for line in fin:
 			if '#CHROM' in line:
 				start = True
+				continue
 			if start:
 				total += 1
 	return total
