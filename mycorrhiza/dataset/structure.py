@@ -35,7 +35,7 @@ class Structure(Dataset):
 				elif not isinstance(_mix_index, int):
 					_mix_index_set = set(_mix_index)
 					valid_func = lambda x : x in _mix_index_set
-			with open(self._file_path) as fin:
+			with open(_file_path) as fin:
 				counter = 0
 				for line in fin:
 
