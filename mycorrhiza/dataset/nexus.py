@@ -72,8 +72,8 @@ def writeFooter(f, commands, update=True, export=True, quit=True):
 		if os_name == 'Windows':
 			export_name = export_name.replace("\\", '\\\\')
 		f.write('\tEXPORT FILE=' + export_name + ' REPLACE=yes;\n')
-		st_graphics_path = os.path.join(os.path.dirname(export_name), 'stgraphics.pdf')
-		f.write('\tEXPORTGRAPHICS format=PDF file={' + st_graphics_path + '};\n')
+		# st_graphics_path = os.path.join(os.path.dirname(export_name), 'stgraphics.pdf')
+		# f.write('\tEXPORTGRAPHICS format=PDF file={' + st_graphics_path + '};\n')
 	if quit:
 		f.write('\tQUIT;\n')
 	f.write('end;\n')
